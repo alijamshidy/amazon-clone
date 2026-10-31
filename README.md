@@ -1,92 +1,61 @@
 # Amazon Clone
 
-A **front-end clone of Amazon** built with **vanilla HTML, CSS, and JavaScript**. This project replicates the core functionality of Amazon's user interface including product listings, shopping cart, checkout process, and user interactions.
+A **front-end clone of Amazon** built with **vanilla HTML, CSS, and JavaScript** (ES Modules, no framework, no build step). It replicates Amazon's storefront UI: a product grid, a persistent shopping cart, and a checkout page with delivery options and order totals.
 
----
-
-## 📸 Screenshot
-*(Add your Amazon clone screenshots here - homepage, product page, cart, checkout, etc.)*
+🔗 **Live demo:** [https://alijamshidy.github.io/amazon-clone/](https://alijamshidy.github.io/amazon-clone/) — automatically deployed to GitHub Pages on every push to `main` via [`.github/workflows/static.yml`](.github/workflows/static.yml).
 
 ---
 
 ## ✨ Features
 
-### 🛒 **Core Shopping Features**
-- Product catalog with grid and list views
-- Product search functionality
-- Product filtering by category, price, rating
-- Product details page with images, description, reviews
-- Add to cart functionality
-- Shopping cart management (add, remove, update quantity)
+### 🛒 **Shopping**
+- Product catalog — 42 products rendered in a responsive grid (7 breakpoints: mobile → desktop)
+- Add to cart with quantity selector (1–10 per item)
+- Cart persisted in `localStorage` (key: `cart`) — survives page reloads
+- Star-rating display for every product
 
-### 💳 **Checkout Process**
-- Multi-step checkout (shipping, payment, review)
-- Shipping address form
-- Delivery options selection
-- Payment method selection
-- Order summary and confirmation
+### 💳 **Checkout**
+- Order summary with per-item delivery dates
+- 3 delivery options: free (7 days), $4.99 (3 days), $9.99 (1 day)
+- Delivery-date calculation with **Day.js** (weekend skipping)
+- Payment summary with item cost, shipping, and **10% estimated tax**
 
-### 👤 **User Experience**
-- Responsive design (works on mobile, tablet, desktop)
-- Product ratings and reviews display
-- Price display with discounts
-- Quantity selector
-- Image gallery/zoom
-
-### 📦 **Data Management**
-- Static product data (JSON-based)
-- Cart persistence (localStorage)
-- Order history simulation
+### 📄 **Pages**
+- `index.html` — storefront / product grid
+- `checkout.html` — order + payment summary
+- `orders.html` / `tracking.html` — static demo pages for order history and shipment tracking (progress-bar UI)
 
 ---
 
 ## 🛠 Tech Stack
 
-**Frontend:**
-- [HTML5](https://developer.mozilla.org/en-US/docs/HTML/HTML5) - Markup language
-- [CSS3](https://developer.mozilla.org/en-US/docs/Web/CSS) - Styling
-- [JavaScript (ES6+)](https://developer.mozilla.org/en-US/docs/Web/JavaScript) - Programming language
-
-**Libraries & Tools:**
-- [Day.js](https://day.js.org/) - Lightweight date library (`dayjs.min.js`)
-- Custom JavaScript modules for:
-  - Cart management
-  - Checkout process
-  - Payment calculation
-  - Data formatting
-
-**Build Tools:**
-- No build step required (pure HTML/JS/CSS)
-- Can be served with any static file server
+- [HTML5](https://developer.mozilla.org/en-US/docs/HTML/HTML5) + [CSS3](https://developer.mozilla.org/en-US/docs/Web/CSS)
+- [JavaScript (ES6+)](https://developer.mozilla.org/en-US/docs/Web/JavaScript) with **native ES Modules** — no bundler, no `package.json`
+- [Day.js](https://day.js.org/) — bundled locally (`scripts/dayjs.min.js`)
+- [Roboto](https://fonts.google.com/specimen/Roboto) via Google Fonts — the only external dependency
+- Data is hardcoded as an ES-module array in `data/products.js`
 
 ---
 
 ## 💻 Installation
 
-### Option 1: Open Directly
-Simply open the `index.html` file in your browser (if available) or use:
-```bash
-# Using Python's built-in HTTP server
-cd amazon-clone
-python -m http.server 8000
-```
+> ⚠️ **A local HTTP server is required.** All pages load JavaScript as ES modules, and module imports are blocked on `file://` URLs (CORS) — opening `index.html` directly in the browser will **not** work.
 
-### Option 2: Clone and Run
 1. **Clone the repository:**
    ```bash
    git clone https://github.com/alijamshidy/amazon-clone.git
    cd amazon-clone
    ```
 
-2. **Start a local server:**
+2. **Start any static file server:**
    ```bash
-   # Using Python
+   # Python
    python -m http.server 8000
-   
-   # Using Node.js (npx)
-   npx serve
-   
-   # Using PHP
+
+   # or Node.js
+   npx serve -p 8000
+
+   # or PHP
    php -S localhost:8000
    ```
 
@@ -95,19 +64,7 @@ python -m http.server 8000
    http://localhost:8000
    ```
 
----
-
-## ⚙ Environment Variables
-
-This project uses **static data** and doesn't require environment variables. However, you can configure:
-
-```env
-# If integrating with a backend API
-API_BASE_URL=http://localhost:5000/api
-
-# For analytics (optional)
-GOOGLE_ANALYTICS_ID=your_ga_id
-```
+No environment variables are needed — the app is fully static and makes no network requests.
 
 ---
 
@@ -115,121 +72,62 @@ GOOGLE_ANALYTICS_ID=your_ga_id
 
 ```
 amazon-clone/
-├── backend/               # Backend data (JSON files)
-│   └── products.json      # Product data
-├── data/                  # Frontend data
-│   ├── cart.js            # Cart functionality
-│   ├── deliveryOptions.js # Delivery options configuration
-│   └── products.js        # Product data (frontend)
-├── images/                # Static images
-│   ├── icons/             # Icon images
-│   ├── products/          # Product images
-│   └── ratings/           # Rating star images
-├── scripts/               # JavaScript modules
-│   ├── amazon.js          # Main application logic
-│   ├── checkout/          # Checkout-related scripts
-│   │   ├── CheckoutHeader.js
-│   │   ├── orderSummary.js
-│   │   └── paymentSummary.js
-│   ├── checkout.js         # Checkout main logic
-│   ├── dayjs.min.js       # Day.js library
-│   └── utils/             # Utility functions
-│       └── money.js       # Money formatting utilities
-├── styles/                # CSS styles
-│   ├── pages/             # Page-specific styles
-│   └── shared/            # Shared/global styles
-├── .github/               # GitHub configuration
-│   └── workflows/         # GitHub Actions workflows
-├── .vscode/               # VS Code configuration
-│   └── settings.json
-├── checkout.html          # Checkout page
-└── README.md
+├── index.html              # Storefront / product grid
+├── checkout.html           # Order + payment summary
+├── orders.html             # Order history (static demo)
+├── tracking.html           # Shipment tracking (static demo)
+├── data/                   # Frontend data (ES modules)
+│   ├── cart.js             # Cart state + localStorage persistence
+│   ├── deliveryOptions.js  # Delivery options & pricing
+│   └── products.js         # Product catalog (42 items)
+├── scripts/
+│   ├── amazon.js           # Storefront logic
+│   ├── checkout.js         # Checkout page bootstrap
+│   ├── checkout/           # orderSummary.js, paymentSummary.js, CheckoutHeader.js
+│   ├── utils/money.js      # Cent → dollar formatting
+│   └── dayjs.min.js        # Day.js (bundled)
+├── styles/
+│   ├── pages/              # Page-specific styles
+│   └── shared/             # Shared/global styles
+├── images/                 # Product, icon, and rating images
+├── backend/products.json   # Unused copy of the product data
+└── .github/workflows/      # GitHub Pages deployment
 ```
 
 ---
 
 ## 🚀 Demo
 
-### Run the project:
-```bash
-cd amazon-clone
-python -m http.server 8000
-```
+1. Browse the product grid on the homepage
+2. Pick a quantity and **Add to Cart**
+3. Open the cart and proceed to **checkout**
+4. Choose a delivery option and review the payment summary (shipping + 10% tax)
 
-### Access the application:
-- **Homepage:** `http://localhost:8000`
-- **Checkout:** `http://localhost:8000/checkout.html`
-
-### Features to Test:
-1. Browse products on the homepage
-2. Click on a product to view details
-3. Add products to cart
-4. View cart and proceed to checkout
-5. Complete the checkout process
-6. Test filtering and search (if available)
+> ℹ️ The "Place your order" button and the search bar are currently non-functional — see [Known Limitations](#-known-limitations).
 
 ---
 
-## 📡 API Documentation
+## 🚧 Known Limitations
 
-This is a **frontend-only** project that uses static data. If you want to connect it to a backend API:
+This is a front-end learning project, so some UI is intentionally not wired up yet:
 
-### Suggested Backend Integration
-
-```javascript
-// Example: Fetch products from an API
-async function fetchProducts() {
-  const response = await fetch('http://localhost:5000/api/products');
-  return await response.json();
-}
-
-// Example: Send cart data to backend
-async function saveCart(cartData) {
-  await fetch('http://localhost:5000/api/cart', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(cartData)
-  });
-}
-```
-
-### Recommended Backend Stack
-- **Node.js + Express** (like your `nodejs-ecommerce-api`)
-- **REST API** endpoints for:
-  - Products: `GET /api/products`
-  - Cart: `GET/POST /api/cart`
-  - Orders: `POST /api/orders`
-  - Users: `GET/POST /api/users`
+- The **search bar** renders but has no event handler — search is not implemented
+- There is **no product details page** — product cards are not links
+- **"Place your order"** does not create an order (checkout is display-only)
+- The cart badge on `orders.html` / `tracking.html` is hardcoded (those pages are static demos)
+- No authentication, no backend, no filtering — good next steps, see the roadmap below
 
 ---
 
-## 📦 Available Scripts
+## 🎯 Roadmap
 
-Since this is a static project, there are no npm scripts. However, you can:
-
-```bash
-# Start a development server
-python -m http.server 8000
-
-# Or with Node.js
-npx serve -p 8000
-
-# Or with live-reload (requires installation)
-npx live-server --port=8000
-```
-
----
-
-## 🎯 Project Roadmap
-
-- [x] Core Amazon-like UI
-- [x] Product catalog and listings
-- [x] Shopping cart functionality
-- [x] Checkout process
-- [ ] User authentication integration
+- [x] Amazon-like UI and product grid
+- [x] Shopping cart with localStorage persistence
+- [x] Checkout with delivery options and tax calculation
+- [x] GitHub Pages deployment
+- [ ] Wire up search and a product details page
+- [ ] Real "place order" flow with order persistence
 - [ ] Backend API integration
-- [ ] Real-time updates
-- [ ] Mobile app version
 
 ---
 
@@ -247,7 +145,7 @@ Contributions are welcome! Please follow these steps:
 
 ## 📜 License
 
-This project is **public** and open for use.
+This project is public and open for educational use.
 
 ---
 
@@ -259,4 +157,4 @@ For support, please open an issue or contact the maintainer.
 
 ## 🏷 Topics
 
-`html`, `css`, `javascript`, `amazon-clone`, `ecommerce`, `frontend`, `vanilla-js`, `responsive-design`, `shopping-cart`, `checkout`, `static-website`
+`html`, `css`, `javascript`, `amazon-clone`, `ecommerce`, `frontend`, `vanilla-js`, `es-modules`, `responsive-design`, `shopping-cart`, `checkout`, `static-website`
