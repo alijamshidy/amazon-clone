@@ -6,6 +6,18 @@ A **front-end clone of Amazon** built with **vanilla HTML, CSS, and JavaScript**
 
 ---
 
+## 📸 Screenshots
+
+| Storefront (`/`) | Checkout (`/checkout.html`) |
+|------------------|------------------------------|
+| ![Storefront — product grid](docs/screenshots/home.png) | ![Checkout — order summary](docs/screenshots/checkout.png) |
+
+| Order tracking (`/tracking.html`, static demo) |
+|------------------------------------------------|
+| ![Order tracking — progress bar](docs/screenshots/tracking.png) |
+
+---
+
 ## ✨ Features
 
 ### 🛒 **Shopping**
